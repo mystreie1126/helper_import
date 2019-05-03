@@ -17,5 +17,38 @@ class goController extends Controller
 
     	return $result;
 
-    }
+	}
+
+	public function updateRef(Request $request){
+
+
+		$query = DB::connection('mysql2')->table('ps_product')
+		->where('reference','like','%'.$request->old_ref.'%')
+		->get();
+
+		return $query;
+
+
+	}
+
+	public function upadteStock(){
+		$query = DB::connection('mysql3')->table('sm_replishment_history')
+		->where('send',0)->get();
+
+		$arr = [];
+		for($i = 0; $i < $query->count(); $i++){
+			$a = DB::connection('mysql3')->table('ps_stock_available')->where('id_product',$query[$i]->shop_product_id)->increment('quantity',$query[$i]->quantity);
+
+
+		}
+
+		return $query;
+		return $arr;
+ 	}
+
+
+ 	public function xiaomi(Request $request){
+
+ 	}
+
 }
